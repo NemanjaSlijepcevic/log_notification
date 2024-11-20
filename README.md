@@ -47,16 +47,6 @@ If you prefer not to build the image yourself, you can pull the pre-built image 
 
     To monitor multiple log files, just make sure all the log files are in the `/path/to/logs` directory on your host machine. The app will automatically monitor all `.log` files in the directory.
 
-    Example with multiple log files:
-    ```bash
-    docker run -d \
-      -e TELEGRAM_BOT_TOKEN=<your-bot-token> \
-      -e TELEGRAM_CHAT_ID=<your-chat-id> \
-      -e NOTIFICATION_PATTERNS="ERROR,WARNING,INFO,EXCEPTION" \
-      -v /path/to/logs:/app/logs \
-      nemanjaslijepcevic/log_notification
-    ```
-
 3. **Verify the Container is Running**:
     ```bash
     docker ps
