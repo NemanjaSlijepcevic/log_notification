@@ -10,7 +10,7 @@ class TestLogFileHandlerInitPos:
 
         handler = LogFileHandler(patterns=[], directory_path='.')
 
-        assert handler.file_positions['.\\test.log'] == 4
+        assert handler.file_positions['./test.log'] == 4
         os.remove("test.log")
 
     def test_init_multiple_file_pass(self, mocker):
@@ -25,9 +25,9 @@ class TestLogFileHandlerInitPos:
 
         handler = LogFileHandler(patterns=[], directory_path='.')
 
-        assert handler.file_positions['.\\test.log'] == 4
-        assert handler.file_positions['.\\test2.log'] == 5
-        assert handler.file_positions['.\\test3.log'] == 8
+        assert handler.file_positions['./test.log'] == 4
+        assert handler.file_positions['./test2.log'] == 5
+        assert handler.file_positions['./test3.log'] == 8
         os.remove("test.log")
         os.remove("test2.log")
         os.remove("test3.log")
