@@ -15,13 +15,13 @@ class TestFilterPatternFunction:
         assert filter_patterns(input_text, input_pattern) == output
 
     def test_filter_patterns_empty_text(self):
-        input_text = ""
+        input_text = []
         input_pattern = ["pattern1", "pattern2"]
         output = ""
         assert filter_patterns(input_text, input_pattern) == output
 
     def test_filter_patterns_empty_patterns(self):
-        input_text = "Text pattern1\nText pattern2"
+        input_text = ["Text pattern1\n", "Text pattern2"]
         input_pattern = []
         output = ""
         assert filter_patterns(input_text, input_pattern) == output

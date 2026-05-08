@@ -19,7 +19,7 @@ def test_init_positions_in_single_file_pass(mock_open, handler, tmp_path):
     result = handler.init_positions_in_single_file(str(filename))
 
     assert result == 4
-    mock_open.assert_called_once_with(str(filename), 'r')
+    mock_open.assert_called_once_with(str(filename), 'r', encoding='utf-8')
 
 
 @patch('builtins.open', side_effect=PermissionError)
@@ -35,7 +35,7 @@ def test_init_positions_in_single_file_permission_error(
     mock_logger.warning.assert_called_once_with(
         f"Permission denied while reading file: {filename}"
     )
-    mock_open.assert_called_once_with(filename, 'r')
+    mock_open.assert_called_once_with(filename, 'r', encoding='utf-8')
 
 
 @patch('builtins.open', side_effect=IOError)
@@ -51,4 +51,4 @@ def test_init_positions_in_single_file_exception(
     mock_logger.exception.assert_called_once_with(
         f"Error occurred during initialization of {filename}"
     )
-    mock_open.assert_called_once_with(filename, 'r')
+    mock_open.assert_called_once_with(filename, 'r', encoding='utf-8')

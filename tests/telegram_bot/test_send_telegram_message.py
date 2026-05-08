@@ -31,7 +31,7 @@ def test_successful_message_send(mock_post):
         f"https://api.telegram.org/bot{bot_token}/sendMessage",
         data={'chat_id': chat_id, 'text': message}
     )
-    assert response == mock_response.ok
+    assert response is True
 
 
 def test_invalid_bot_token_handling(mock_post, mock_logger):

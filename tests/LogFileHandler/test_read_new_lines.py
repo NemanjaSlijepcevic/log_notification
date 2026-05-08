@@ -15,7 +15,7 @@ def test_read_new_lines_pass(mock_file, handler):
     result = handler.read_new_lines('test.log')
 
     assert result == ["line1\n", "line2\n"]
-    mock_file.assert_called_once_with('test.log', 'r')
+    mock_file.assert_called_once_with('test.log', 'r', encoding='utf-8')
 
 
 @patch('builtins.open', side_effect=IOError)
@@ -30,4 +30,4 @@ def test_read_new_lines_fail(mock_logger, mock_file, handler):
     mock_logger.exception.assert_called_once_with(
         "Error occurred during reading a test.log"
     )
-    mock_file.assert_called_once_with('test.log', 'r')
+    mock_file.assert_called_once_with('test.log', 'r', encoding='utf-8')

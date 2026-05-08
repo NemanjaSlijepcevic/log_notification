@@ -1,17 +1,16 @@
-# Use the official Python image from Docker Hub
-FROM python:3.13-alpine
+FROM python:3.14-alpine
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy the requirements.txt file to the working directory
 COPY requirements.txt .
-
-# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application files
 COPY *py .
 
-# Default command
+RUN adduser -D appuser && chown -R appuser /app
+USER appuser
+
+HEALTHCHECK --interval=60s --timeout=5s --start-period=10s --retries=3 \
+    CMD pgrep -f "python main.py" || exit 1
+
 CMD ["python", "main.py"]

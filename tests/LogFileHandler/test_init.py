@@ -1,33 +1,22 @@
-import os
 from LogFileHandler import LogFileHandler
 
 
 class TestLogFileHandlerInitPos:
 
-    def test_init_single_file_pass(self, mocker):
-        with open('test.log', 'w') as file:
-            file.write('test')
+    def test_init_single_file_pass(self, tmp_path):
+        (tmp_path / 'test.log').write_text('test', encoding='utf-8')
 
-        handler = LogFileHandler(patterns=[], directory_path='.')
+        handler = LogFileHandler(patterns=[], directory_path=str(tmp_path))
 
-        assert handler.file_positions['./test.log'] == 4
-        os.remove("test.log")
+        assert handler.file_positions[str(tmp_path / 'test.log')] == 4
 
-    def test_init_multiple_file_pass(self, mocker):
-        with open('test.log', 'w') as file:
-            file.write('test')
+    def test_init_multiple_file_pass(self, tmp_path):
+        (tmp_path / 'test.log').write_text('test', encoding='utf-8')
+        (tmp_path / 'test2.log').write_text('test2', encoding='utf-8')
+        (tmp_path / 'test3.log').write_text('testtest', encoding='utf-8')
 
-        with open('test2.log', 'w') as file:
-            file.write('test2')
+        handler = LogFileHandler(patterns=[], directory_path=str(tmp_path))
 
-        with open('test3.log', 'w') as file:
-            file.write('testtest')
-
-        handler = LogFileHandler(patterns=[], directory_path='.')
-
-        assert handler.file_positions['./test.log'] == 4
-        assert handler.file_positions['./test2.log'] == 5
-        assert handler.file_positions['./test3.log'] == 8
-        os.remove("test.log")
-        os.remove("test2.log")
-        os.remove("test3.log")
+        assert handler.file_positions[str(tmp_path / 'test.log')] == 4
+        assert handler.file_positions[str(tmp_path / 'test2.log')] == 5
+        assert handler.file_positions[str(tmp_path / 'test3.log')] == 8

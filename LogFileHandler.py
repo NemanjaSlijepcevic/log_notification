@@ -11,12 +11,13 @@ CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 
 class LogFileHandler(FileSystemEventHandler):
 
-    patterns = []
-
     def __init__(self, patterns, directory_path):
         logger.debug("Init class:")
         self.patterns = patterns
         self.file_positions = {}
+        if not os.path.isdir(directory_path):
+            logger.warning(f"Log directory does not exist: {directory_path}")
+            return
         for filename in os.listdir(directory_path):
             file_path = os.path.join(directory_path, filename)
             if os.path.isfile(file_path) and file_path.endswith('.log'):
@@ -25,7 +26,7 @@ class LogFileHandler(FileSystemEventHandler):
     def init_positions_in_single_file(self, file_path):
         logger.debug(f"Init position in a file: {file_path}")
         try:
-            with open(file_path, 'r') as f:
+            with open(file_path, 'r', encoding='utf-8') as f:
                 f.seek(0, os.SEEK_END)
                 self.file_positions[file_path] = f.tell()
                 logger.info(
@@ -46,7 +47,7 @@ class LogFileHandler(FileSystemEventHandler):
     def read_new_lines(self, file_path):
         logger.debug(f"Reading new lines in a file: {file_path}")
         try:
-            with open(file_path, 'r') as f:
+            with open(file_path, 'r', encoding='utf-8') as f:
                 last_position = f.seek(0, os.SEEK_END)
                 f.seek(self.file_positions.get(file_path, 0))
                 new_lines = f.readlines()
@@ -61,11 +62,11 @@ class LogFileHandler(FileSystemEventHandler):
             return
         log_file = event.src_path
         logger.debug(f"File modified: {log_file}")
-        # If the file is new, initialize it
         if log_file not in self.file_positions:
-            return not self.init_positions_in_single_file(log_file)
+            self.init_positions_in_single_file(log_file)
+            return
         new_lines = self.read_new_lines(log_file)
-        if new_lines == []:
+        if not new_lines:
             logger.debug(f"No new lines in: {log_file}")
             return
         logger.debug(f"Found lines: {new_lines}")

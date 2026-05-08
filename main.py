@@ -23,8 +23,7 @@ logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
 
-    if not check_input_values():
-        logger.info("Undefined input variable")
+    check_input_values()
     patterns = generate_defined_patterns(notify_patterns)
     logger.debug(f"Found patterns: {patterns}")
     observer = PollingObserver()

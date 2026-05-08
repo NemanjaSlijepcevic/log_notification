@@ -38,7 +38,7 @@ def test_modified_init(mock_init_positions, handler):
     event.is_directory = False
     event.src_path = './test.log'
 
-    assert handler.on_modified(event) is False
+    assert handler.on_modified(event) is None
     mock_init_positions.assert_called_once_with('./test.log')
 
 
